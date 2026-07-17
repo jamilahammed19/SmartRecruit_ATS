@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     #User apps
     'core',
+    'accounts',
 ]
 
 MIDDLEWARE = [
