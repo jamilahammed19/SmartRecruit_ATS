@@ -100,3 +100,16 @@ class Education(models.Model):
     class Meta:
         abstract = True
 
+
+class Training(models.Model):
+    training_title = models.CharField(max_length=255)
+    institute = models.CharField(max_length=255)
+    duration = models.CharField(max_length=50)
+    location = models.CharField(max_length=255)
+    start_date = models.DateField()
+    end_date = models.DateField()
+
+    class Meta:
+        abstract = True
+
+
