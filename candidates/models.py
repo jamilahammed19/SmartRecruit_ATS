@@ -24,7 +24,6 @@ MARITAL_STATUS_CHOICES = [
     ('W', 'Widowed')
 ]
 
-
 BLOOD_GROUP_CHOICES = [
     ('A+', 'A+'),
     ('A-', 'A-'),
@@ -35,6 +34,16 @@ BLOOD_GROUP_CHOICES = [
     ('O+', 'O+'),
     ('O-', 'O-'),
 ]
+
+DEGREE_TYPE_CHOICES = [
+    ('SSC', 'SSC'), 
+    ('HSC', 'HSC'), 
+    ('Bachelors', 'Bachelors'), 
+    ('Masters', 'Masters'), 
+    ('PhD', 'PhD'),
+    ('Other', 'Other')    
+]
+
 
 class PersonalInfo(models.Model):
     photo = models.ImageField(upload_to='photos/', blank=True, null=True)
@@ -63,7 +72,6 @@ class PersonalInfo(models.Model):
         abstract = True
     
 
-
 class Address(models.Model):
     country = models.CharField(max_length=100)
     division = models.CharField(max_length=100)
@@ -76,4 +84,19 @@ class Address(models.Model):
     class Meta:
         abstract = True
 
+
+class Education(models.Model):
+    degree_type = models.CharField(max_length=50, choices=DEGREE_TYPE_CHOICES)
+    degree_title = models.CharField(max_length=100)
+    board_university = models.CharField(max_length=255)
+    major_group = models.CharField(max_length=100, blank=True, null=True)
+    institution = models.CharField(max_length=255)
+    dept = models.CharField(max_length=255, blank=True, null=True)
+    result = models.CharField(max_length=50)
+    scale = models.CharField(max_length=50)
+    passing_year = models.PositiveIntegerField()
+    duration = models.CharField(max_length=50)
+
+    class Meta:
+        abstract = True
 
