@@ -55,6 +55,25 @@ class PersonalInfo(models.Model):
     blood_group = models.CharField(max_length=3, choices=BLOOD_GROUP_CHOICES)
     height = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     weight = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    
+
     def __str__(self):
         return f"{self.full_name} - {self.phone_number}"
+    
+    class Meta:
+        abstract = True
+    
+
+
+class Address(models.Model):
+    country = models.CharField(max_length=100)
+    division = models.CharField(max_length=100)
+    district = models.CharField(max_length=100)
+    thana = models.CharField(max_length=100)
+    post_office = models.CharField(max_length=100)
+    post_code = models.CharField(max_length=20)
+    house_road_village = models.CharField(max_length=255)
+
+    class Meta:
+        abstract = True
+
+
