@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from core.models import TimeStampedModel
 
 # Create your models here.
@@ -168,6 +169,7 @@ class PortfolioPublicationProject(TimeStampedModel):
 
 
 class CandidateProfile(TimeStampedModel):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='candidate_profile')
     personal_info = models.OneToOneField(PersonalInfo, on_delete=models.CASCADE)
     present_address = models.OneToOneField(Address, related_name='present_address', on_delete=models.CASCADE)
     permanent_address = models.OneToOneField(Address, related_name='permanent_address', on_delete=models.CASCADE)
