@@ -159,3 +159,10 @@ class Reference(models.Model):
     class Meta:
         abstract = True
 
+class PortfolioPublicationProject(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True, null=True)
+    link = models.URLField(blank=True, null=True)
+
+    class Meta:
+        abstract = True
