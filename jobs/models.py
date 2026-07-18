@@ -13,3 +13,4 @@ class Job(TimeStampedModel):
     deadline = models.DateField()
     status = models.CharField(max_length=20, choices=[('open', 'Open'), ('processing', 'In Processing Stage'), ('completed','Completed')], default='open')
 
+
