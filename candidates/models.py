@@ -113,3 +113,49 @@ class Training(models.Model):
         abstract = True
 
 
+class Employment(models.Model):
+    organization_name = models.CharField(max_length=255)
+    organization_business = models.CharField(max_length=255, blank=True, null=True)
+    organization_location = models.CharField(max_length=255, blank=True, null=True)
+    designation = models.CharField(max_length=255)
+    department = models.CharField(max_length=255, blank=True, null=True)
+    responsibilities = models.TextField(blank=True, null=True)
+    start_date = models.DateField()
+    end_date = models.DateField(blank=True, null=True)
+    is_current = models.BooleanField(default=False)
+
+    class Meta:
+        abstract = True
+
+
+class Skill(models.Model):
+    skill_name = models.CharField(max_length=255)
+    years_of_experience = models.PositiveIntegerField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+
+    class Meta:
+        abstract = True
+
+
+class ExtracurricularActivity(models.Model):
+    activity_name = models.CharField(max_length=255)
+    position_held = models.CharField(max_length=255, blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+
+    class Meta:
+        abstract = True
+
+
+class Reference(models.Model):
+    name = models.CharField(max_length=255)
+    organization = models.CharField(max_length=255, blank=True, null=True)
+    designation = models.CharField(max_length=255, blank=True, null=True)
+    mobile_number = models.CharField(max_length=15, blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    phone_office = models.CharField(max_length=15, blank=True, null=True)
+    relationship = models.CharField(max_length=255, blank=True, null=True)
+    address = models.TextField(blank=True, null=True)
+
+    class Meta:
+        abstract = True
+
