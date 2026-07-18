@@ -17,3 +17,5 @@ class HRProfile(TimeStampedModel):
         full_name = self.user.get_full_name()
         display_name = full_name if full_name else self.user.username
         return f"{display_name} | {self.designation}"
+
+
