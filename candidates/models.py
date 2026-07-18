@@ -1,4 +1,5 @@
 from django.db import models
+from core.models import TimeStampedModel
 
 # Create your models here.
 
@@ -45,7 +46,7 @@ DEGREE_TYPE_CHOICES = [
 ]
 
 
-class PersonalInfo(models.Model):
+class PersonalInfo(TimeStampedModel):
     photo = models.ImageField(upload_to='photos/', blank=True, null=True)
     full_name = models.CharField(max_length=255)
     father_name = models.CharField(max_length=255)
@@ -69,7 +70,7 @@ class PersonalInfo(models.Model):
         abstract = True
     
 
-class Address(models.Model):
+class Address(TimeStampedModel):
     country = models.CharField(max_length=100)
     division = models.CharField(max_length=100)
     district = models.CharField(max_length=100)
@@ -82,7 +83,7 @@ class Address(models.Model):
         abstract = True
 
 
-class Education(models.Model):
+class Education(TimeStampedModel):
     degree_type = models.CharField(max_length=50, choices=DEGREE_TYPE_CHOICES)
     degree_title = models.CharField(max_length=100)
     board_university = models.CharField(max_length=255)
@@ -98,7 +99,7 @@ class Education(models.Model):
         abstract = True
 
 
-class Training(models.Model):
+class Training(TimeStampedModel):
     training_title = models.CharField(max_length=255)
     institute = models.CharField(max_length=255)
     duration = models.CharField(max_length=50)
@@ -110,7 +111,7 @@ class Training(models.Model):
         abstract = True
 
 
-class Employment(models.Model):
+class Employment(TimeStampedModel):
     organization_name = models.CharField(max_length=255)
     organization_business = models.CharField(max_length=255, blank=True, null=True)
     organization_location = models.CharField(max_length=255, blank=True, null=True)
@@ -125,7 +126,7 @@ class Employment(models.Model):
         abstract = True
 
 
-class Skill(models.Model):
+class Skill(TimeStampedModel):
     skill_name = models.CharField(max_length=255)
     years_of_experience = models.PositiveIntegerField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
@@ -134,7 +135,7 @@ class Skill(models.Model):
         abstract = True
 
 
-class ExtracurricularActivity(models.Model):
+class ExtracurricularActivity(TimeStampedModel):
     activity_name = models.CharField(max_length=255)
     position_held = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
@@ -143,7 +144,7 @@ class ExtracurricularActivity(models.Model):
         abstract = True
 
 
-class Reference(models.Model):
+class Reference(TimeStampedModel):
     name = models.CharField(max_length=255)
     organization = models.CharField(max_length=255, blank=True, null=True)
     designation = models.CharField(max_length=255, blank=True, null=True)
@@ -157,7 +158,7 @@ class Reference(models.Model):
         abstract = True
 
 
-class PortfolioPublicationProject(models.Model):
+class PortfolioPublicationProject(TimeStampedModel):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     link = models.URLField(blank=True, null=True)
@@ -166,7 +167,7 @@ class PortfolioPublicationProject(models.Model):
         abstract = True
 
 
-class CandidateProfile(models.Model):
+class CandidateProfile(TimeStampedModel):
     personal_info = models.OneToOneField(PersonalInfo, on_delete=models.CASCADE)
     present_address = models.OneToOneField(Address, related_name='present_address', on_delete=models.CASCADE)
     permanent_address = models.OneToOneField(Address, related_name='permanent_address', on_delete=models.CASCADE)
