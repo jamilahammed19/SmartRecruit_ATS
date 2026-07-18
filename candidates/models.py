@@ -166,7 +166,7 @@ class PortfolioPublicationProject(models.Model):
         abstract = True
 
 
-class Profile(models.Model):
+class CandidateProfile(models.Model):
     personal_info = models.OneToOneField(PersonalInfo, on_delete=models.CASCADE)
     present_address = models.OneToOneField(Address, related_name='present_address', on_delete=models.CASCADE)
     permanent_address = models.OneToOneField(Address, related_name='permanent_address', on_delete=models.CASCADE)
