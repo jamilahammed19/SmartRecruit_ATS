@@ -64,10 +64,7 @@ class PersonalInfo(models.Model):
     blood_group = models.CharField(max_length=3, choices=BLOOD_GROUP_CHOICES)
     height = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     weight = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-
-    def __str__(self):
-        return f"{self.full_name} - {self.phone_number}"
-    
+  
     class Meta:
         abstract = True
     
@@ -159,6 +156,7 @@ class Reference(models.Model):
     class Meta:
         abstract = True
 
+
 class PortfolioPublicationProject(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
@@ -166,3 +164,19 @@ class PortfolioPublicationProject(models.Model):
 
     class Meta:
         abstract = True
+
+
+class Profile(models.Model):
+    personal_info = models.OneToOneField(PersonalInfo, on_delete=models.CASCADE)
+    present_address = models.OneToOneField(Address, related_name='present_address', on_delete=models.CASCADE)
+    permanent_address = models.OneToOneField(Address, related_name='permanent_address', on_delete=models.CASCADE)
+    educations = models.ManyToManyField(Education, blank=True)
+    trainings = models.ManyToManyField(Training, blank=True)
+    employments = models.ManyToManyField(Employment, blank=True)
+    skills = models.ManyToManyField(Skill, blank=True)
+    extracurricular_activities = models.ManyToManyField(ExtracurricularActivity, blank=True)
+    references = models.ManyToManyField(Reference, blank=True)
+    portfolios_publications_projects = models.ManyToManyField(PortfolioPublicationProject, blank=True)
+
+    def __str__(self):
+        return f"Profile of {self.personal_info.full_name}"
