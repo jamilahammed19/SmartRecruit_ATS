@@ -14,3 +14,7 @@ class Job(TimeStampedModel):
     status = models.CharField(max_length=20, choices=[('open', 'Open'), ('processing', 'In Processing Stage'), ('completed','Completed')], default='open')
 
 
+class AIInterviewQuestion(TimeStampedModel):
+    job = models.ForeignKey(Job, on_delete=models.CASCADE)
+    question = models.TextField()
+    answer = models.TextField(blank=True, null=True, help_text="AI-generated answer to the question")
