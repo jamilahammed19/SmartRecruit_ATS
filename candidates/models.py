@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 from core.models import TimeStampedModel
@@ -48,14 +49,14 @@ DEGREE_TYPE_CHOICES = [
 
 
 class PersonalInfo(TimeStampedModel):
-    photo = models.ImageField(upload_to='photos/', blank=True, null=True)
+    photo = models.ImageField(upload_to='candidate/images/', blank=True, null=True)
     full_name = models.CharField(max_length=255)
     father_name = models.CharField(max_length=255)
     mother_name = models.CharField(max_length=255)
     date_of_birth = models.DateField()
-    gender = models.CharField(max_length=1, choices=GENDER_CHOICES)
-    religion = models.CharField(max_length=1, choices=RELIGION_CHOICES)
-    marital_status = models.CharField(max_length=1, choices=MARITAL_STATUS_CHOICES)
+    gender = models.CharField(max_length=6, choices=GENDER_CHOICES)
+    religion = models.CharField(max_length=20, choices=RELIGION_CHOICES)
+    marital_status = models.CharField(max_length=20, choices=MARITAL_STATUS_CHOICES)
     nationality = models.CharField(max_length=100)
     nid = models.CharField(max_length=20, unique=True)
     passport_number = models.CharField(max_length=20, unique=True, blank=True, null=True)
@@ -66,22 +67,16 @@ class PersonalInfo(TimeStampedModel):
     blood_group = models.CharField(max_length=3, choices=BLOOD_GROUP_CHOICES)
     height = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     weight = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-  
-    class Meta:
-        abstract = True
     
 
 class Address(TimeStampedModel):
     country = models.CharField(max_length=100)
     division = models.CharField(max_length=100)
     district = models.CharField(max_length=100)
-    thana = models.CharField(max_length=100)
+    thana_upzila = models.CharField(max_length=100)
     post_office = models.CharField(max_length=100)
     post_code = models.CharField(max_length=20)
     house_road_village = models.CharField(max_length=255)
-
-    class Meta:
-        abstract = True
 
 
 class Education(TimeStampedModel):
@@ -96,9 +91,6 @@ class Education(TimeStampedModel):
     passing_year = models.PositiveIntegerField()
     duration = models.CharField(max_length=50)
 
-    class Meta:
-        abstract = True
-
 
 class Training(TimeStampedModel):
     training_title = models.CharField(max_length=255)
@@ -107,9 +99,6 @@ class Training(TimeStampedModel):
     location = models.CharField(max_length=255)
     start_date = models.DateField()
     end_date = models.DateField()
-
-    class Meta:
-        abstract = True
 
 
 class Employment(TimeStampedModel):
@@ -123,26 +112,17 @@ class Employment(TimeStampedModel):
     end_date = models.DateField(blank=True, null=True)
     is_current = models.BooleanField(default=False)
 
-    class Meta:
-        abstract = True
-
 
 class Skill(TimeStampedModel):
     skill_name = models.CharField(max_length=255)
     years_of_experience = models.PositiveIntegerField(blank=True, null=True)
     description = models.TextField(blank=True, null=True)
 
-    class Meta:
-        abstract = True
-
 
 class ExtracurricularActivity(TimeStampedModel):
     activity_name = models.CharField(max_length=255)
     position_held = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
-
-    class Meta:
-        abstract = True
 
 
 class Reference(TimeStampedModel):
@@ -155,21 +135,15 @@ class Reference(TimeStampedModel):
     relationship = models.CharField(max_length=255, blank=True, null=True)
     address = models.TextField(blank=True, null=True)
 
-    class Meta:
-        abstract = True
-
 
 class PortfolioPublicationProject(TimeStampedModel):
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True, null=True)
     link = models.URLField(blank=True, null=True)
 
-    class Meta:
-        abstract = True
-
 
 class CandidateProfile(TimeStampedModel):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='candidate_profile')
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     personal_info = models.OneToOneField(PersonalInfo, on_delete=models.CASCADE)
     present_address = models.OneToOneField(Address, related_name='present_address', on_delete=models.CASCADE)
     permanent_address = models.OneToOneField(Address, related_name='permanent_address', on_delete=models.CASCADE)
