@@ -3,7 +3,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from core.models import TimeStampedModel
 
-# Create your models here.
 
 GENDER_CHOICES = [
     ('male', 'Male'), 
@@ -50,96 +49,95 @@ DEGREE_TYPE_CHOICES = [
 
 class PersonalInfo(TimeStampedModel):
     photo = models.ImageField(upload_to='candidate/images/', blank=True, null=True)
-    full_name = models.CharField(max_length=255)
-    father_name = models.CharField(max_length=255)
-    mother_name = models.CharField(max_length=255)
-    date_of_birth = models.DateField()
-    gender = models.CharField(max_length=6, choices=GENDER_CHOICES)
-    religion = models.CharField(max_length=20, choices=RELIGION_CHOICES)
-    marital_status = models.CharField(max_length=20, choices=MARITAL_STATUS_CHOICES)
-    nationality = models.CharField(max_length=100)
-    nid = models.CharField(max_length=20, unique=True)
+    full_name = models.CharField(max_length=255, blank=True)
+    father_name = models.CharField(max_length=255, blank=True)
+    mother_name = models.CharField(max_length=255, blank=True)
+    date_of_birth = models.DateField(blank=True, null=True)
+    gender = models.CharField(max_length=6, choices=GENDER_CHOICES, blank=True)
+    religion = models.CharField(max_length=20, choices=RELIGION_CHOICES, blank=True)
+    marital_status = models.CharField(max_length=20, choices=MARITAL_STATUS_CHOICES, blank=True)
+    nationality = models.CharField(max_length=100, blank=True)
+    nid = models.CharField(max_length=20, unique=True, blank=True, null=True)
     passport_number = models.CharField(max_length=20, unique=True, blank=True, null=True)
     phone_number = models.CharField(max_length=15, unique=True, blank=True, null=True)
-    phone_number_alt = models.CharField(max_length=15, blank=True, null=True)
-    email = models.EmailField(unique=True)
-    email_alt = models.EmailField(blank=True, null=True)
-    blood_group = models.CharField(max_length=3, choices=BLOOD_GROUP_CHOICES)
+    phone_number_alt = models.CharField(max_length=15, blank=True)
+    verified_email = models.EmailField(unique=True, blank=True, null=True)
+    email_alt = models.EmailField(blank=True)
+    blood_group = models.CharField(max_length=3, choices=BLOOD_GROUP_CHOICES, blank=True)
     height = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     weight = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     
 
 class Address(TimeStampedModel):
-    country = models.CharField(max_length=100)
-    division = models.CharField(max_length=100)
-    district = models.CharField(max_length=100)
-    thana_upzila = models.CharField(max_length=100)
-    post_office = models.CharField(max_length=100)
-    post_code = models.CharField(max_length=20)
-    house_road_village = models.CharField(max_length=255)
+    country = models.CharField(max_length=100, default='Bangladesh', blank=True)
+    division = models.CharField(max_length=100, blank=True)
+    district = models.CharField(max_length=100, blank=True)
+    thana_upzila = models.CharField(max_length=100, blank=True)
+    post_office = models.CharField(max_length=100, blank=True)
+    post_code = models.CharField(max_length=20, blank=True)
+    house_road_village = models.CharField(max_length=255, blank=True)
 
 
 class Education(TimeStampedModel):
-    degree_type = models.CharField(max_length=50, choices=DEGREE_TYPE_CHOICES)
-    degree_title = models.CharField(max_length=100)
-    board_university = models.CharField(max_length=255)
-    major_group = models.CharField(max_length=100, blank=True, null=True)
-    institution = models.CharField(max_length=255)
-    dept = models.CharField(max_length=255, blank=True, null=True)
-    result = models.CharField(max_length=50)
-    scale = models.CharField(max_length=50)
-    passing_year = models.PositiveIntegerField()
-    duration = models.CharField(max_length=50)
+    degree_type = models.CharField(max_length=50, choices=DEGREE_TYPE_CHOICES, blank=True)
+    degree_title = models.CharField(max_length=100, blank=True)
+    board_university = models.CharField(max_length=255, blank=True)
+    major_group = models.CharField(max_length=100, blank=True)
+    institution = models.CharField(max_length=255, blank=True)
+    dept = models.CharField(max_length=255, blank=True)
+    result = models.CharField(max_length=50, blank=True)
+    scale = models.CharField(max_length=50, blank=True)
+    passing_year = models.PositiveIntegerField(blank=True, null=True)
+    duration = models.CharField(max_length=50, blank=True, null=True)
 
 
 class Training(TimeStampedModel):
-    training_title = models.CharField(max_length=255)
-    institute = models.CharField(max_length=255)
-    duration = models.CharField(max_length=50)
-    location = models.CharField(max_length=255)
-    start_date = models.DateField()
-    end_date = models.DateField()
+    training_title = models.CharField(max_length=255, blank=True)
+    institute = models.CharField(max_length=255, blank=True)
+    location = models.CharField(max_length=255, blank=True)
+    start_date = models.DateField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
 
 
 class Employment(TimeStampedModel):
-    organization_name = models.CharField(max_length=255)
-    organization_business = models.CharField(max_length=255, blank=True, null=True)
-    organization_location = models.CharField(max_length=255, blank=True, null=True)
-    designation = models.CharField(max_length=255)
-    department = models.CharField(max_length=255, blank=True, null=True)
-    responsibilities = models.TextField(blank=True, null=True)
-    start_date = models.DateField()
+    organization_name = models.CharField(max_length=255, blank=True)
+    organization_business = models.CharField(max_length=255, blank=True)
+    organization_location = models.CharField(max_length=255, blank=True)
+    designation = models.CharField(max_length=255, blank=True)
+    department = models.CharField(max_length=255, blank=True)
+    responsibilities = models.TextField(blank=True)
+    start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
     is_current = models.BooleanField(default=False)
 
 
 class Skill(TimeStampedModel):
-    skill_name = models.CharField(max_length=255)
+    skill_name = models.CharField(max_length=255, blank=True)
     years_of_experience = models.PositiveIntegerField(blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
+    description = models.TextField(blank=True)
 
 
 class ExtracurricularActivity(TimeStampedModel):
-    activity_name = models.CharField(max_length=255)
-    position_held = models.CharField(max_length=255, blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
+    activity_name = models.CharField(max_length=255, blank=True)
+    position_held = models.CharField(max_length=255, blank=True)
+    description = models.TextField(blank=True)
 
 
 class Reference(TimeStampedModel):
-    name = models.CharField(max_length=255)
-    organization = models.CharField(max_length=255, blank=True, null=True)
-    designation = models.CharField(max_length=255, blank=True, null=True)
-    mobile_number = models.CharField(max_length=15, blank=True, null=True)
-    email = models.EmailField(blank=True, null=True)
-    phone_office = models.CharField(max_length=15, blank=True, null=True)
-    relationship = models.CharField(max_length=255, blank=True, null=True)
-    address = models.TextField(blank=True, null=True)
+    name = models.CharField(max_length=255, blank=True)
+    organization = models.CharField(max_length=255, blank=True)
+    designation = models.CharField(max_length=255, blank=True)
+    mobile_number = models.CharField(max_length=15, blank=True)
+    email = models.EmailField(blank=True)
+    phone_office = models.CharField(max_length=15, blank=True)
+    relationship = models.CharField(max_length=255, blank=True)
+    address = models.TextField(blank=True)
 
 
 class PortfolioPublicationProject(TimeStampedModel):
-    title = models.CharField(max_length=255)
-    description = models.TextField(blank=True, null=True)
-    link = models.URLField(blank=True, null=True)
+    title = models.CharField(max_length=255, blank=True)
+    description = models.TextField(blank=True)
+    link = models.URLField(blank=True)
 
 
 class CandidateProfile(TimeStampedModel):

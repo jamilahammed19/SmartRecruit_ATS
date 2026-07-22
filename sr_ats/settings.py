@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,6 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Third-party apps
+    'rest_framework',
+    'rest_framework_simplejwt',
 
     #User apps
     'core',
@@ -131,3 +136,24 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 AUTH_USER_MODEL = 'auth.User'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
+
+SIMPLE_JWT = {
+    # Access token is short-lived for security (React sends this with every request)
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    
+    # Refresh token is long-lived (React uses this to silently get a new Access token)
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    
+    # The frontend will send the token as "Bearer <token>"
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    
+    # Adds the user's ID to the token so the backend knows who they are
+    'USER_ID_FIELD': 'id',
+    'USER_ID_CLAIM': 'user_id',
+}
