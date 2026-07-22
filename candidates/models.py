@@ -5,25 +5,25 @@ from core.models import TimeStampedModel
 # Create your models here.
 
 GENDER_CHOICES = [
-    ('M', 'Male'), 
-    ('F', 'Female'), 
-    ('O', 'Other')
+    ('male', 'Male'), 
+    ('female', 'Female'), 
+    ('other', 'Other')
 ]
 
 RELIGION_CHOICES = [
-    ('C', 'Christianity'), 
-    ('I', 'Islam'), 
-    ('H', 'Hinduism'), 
-    ('B', 'Buddhism'), 
-    ('J', 'Judaism'), 
-    ('O', 'Other')
+    ('christianity', 'Christianity'), 
+    ('islam', 'Islam'), 
+    ('hinduism', 'Hinduism'), 
+    ('buddhism', 'Buddhism'), 
+    ('judaism', 'Judaism'), 
+    ('other', 'Other')
 ]
 
 MARITAL_STATUS_CHOICES = [
-    ('S', 'Single'), 
-    ('M', 'Married'), 
-    ('D', 'Divorced'), 
-    ('W', 'Widowed')
+    ('single', 'Single'), 
+    ('married', 'Married'), 
+    ('divorced', 'Divorced'), 
+    ('widowed', 'Widowed')
 ]
 
 BLOOD_GROUP_CHOICES = [
@@ -38,12 +38,12 @@ BLOOD_GROUP_CHOICES = [
 ]
 
 DEGREE_TYPE_CHOICES = [
-    ('SSC', 'SSC'), 
-    ('HSC', 'HSC'), 
-    ('Bachelors', 'Bachelors'), 
-    ('Masters', 'Masters'), 
-    ('PhD', 'PhD'),
-    ('Other', 'Other')    
+    ('ssc', 'SSC'), 
+    ('hsc', 'HSC'), 
+    ('bachelors', 'Bachelors'), 
+    ('masters', 'Masters'), 
+    ('phd', 'PhD'),
+    ('other', 'Other')    
 ]
 
 
