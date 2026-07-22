@@ -1,5 +1,5 @@
 from rest_framework import generics, viewsets
-from rest_framework.permissions import IsAuthenticated
+from .permissions import IsCandidateUser
 from .models import (
     Education, Training, Employment, 
     Skill, ExtracurricularActivity, Reference, 
@@ -14,12 +14,12 @@ from .serializers import (
 
 
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsCandidateUser
 from .serializers import CandidateProfileReadSerializer
 
 
 class CandidateProfileView(generics.RetrieveAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsCandidateUser]
     serializer_class = CandidateProfileReadSerializer
 
     def get_object(self):
@@ -27,7 +27,7 @@ class CandidateProfileView(generics.RetrieveAPIView):
 
 
 class BaseProfileSectionViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsCandidateUser]
 
     def get_queryset(self):
         return self.queryset.filter(candidateprofile=self.request.user.candidateprofile)
@@ -39,7 +39,7 @@ class BaseProfileSectionViewSet(viewsets.ModelViewSet):
 
 class PersonalInfoView(generics.RetrieveUpdateAPIView):
     serializer_class = PersonalInfoSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsCandidateUser]
 
     def get_object(self):
         return self.request.user.candidateprofile.personal_info
@@ -47,7 +47,7 @@ class PersonalInfoView(generics.RetrieveUpdateAPIView):
 
 class PresentAddressView(generics.RetrieveUpdateAPIView):
     serializer_class = AddressSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsCandidateUser]
 
     def get_object(self):
         return self.request.user.candidateprofile.present_address
@@ -55,7 +55,7 @@ class PresentAddressView(generics.RetrieveUpdateAPIView):
 
 class PermanentAddressView(generics.RetrieveUpdateAPIView):
     serializer_class = AddressSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsCandidateUser]
 
     def get_object(self):
         return self.request.user.candidateprofile.permanent_address

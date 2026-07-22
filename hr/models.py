@@ -8,10 +8,10 @@ from core.models import TimeStampedModel
 
 class HRProfile(TimeStampedModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='hr_profile')
-    department = models.CharField(max_length=100, help_text="e.g., Engineering Recruitment, Campus Hiring")
-    designation = models.CharField(max_length=100, help_text="e.g., Senior Talent Acquisition Specialist")
+    department = models.CharField(max_length=100)
+    designation = models.CharField(max_length=100)
     company_phone = models.CharField(max_length=20, blank=True, null=True)
-    profile_picture = models.ImageField(upload_to='hr_profiles/', blank=True, null=True)
+    profile_picture = models.ImageField(upload_to='media/hr_profiles/', blank=True, null=True)
 
     def __str__(self):
         full_name = self.user.get_full_name()
