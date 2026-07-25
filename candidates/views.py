@@ -14,7 +14,6 @@ from .serializers import (
 
 
 from rest_framework import generics
-from rest_framework.permissions import IsCandidateUser
 from .serializers import CandidateProfileReadSerializer
 
 
@@ -94,3 +93,5 @@ class ReferenceViewSet(BaseProfileSectionViewSet):
 class PortfolioPublicationProjectViewSet(BaseProfileSectionViewSet):
     queryset = PortfolioPublicationProject.objects.all()
     serializer_class = PortfolioPublicationProjectSerializer
+
+

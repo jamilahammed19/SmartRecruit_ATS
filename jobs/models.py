@@ -2,10 +2,12 @@ from django.db import models
 from core.models import TimeStampedModel
 
 # Create your models here.
-STATUS_CHOICES = [('open', 'Open'), 
-                  ('processing', 'In Processing Stage'), 
-                  ('completed','Completed')
+STATUS_CHOICES = [
+    ('open', 'Open'), 
+    ('processing', 'In Processing Stage'), 
+    ('completed','Completed')
 ]
+
 
 class Job(TimeStampedModel):
     title = models.CharField(max_length=255)
@@ -22,3 +24,5 @@ class AIInterviewQuestion(TimeStampedModel):
     job = models.ForeignKey(Job, on_delete=models.CASCADE)
     question = models.TextField()
     answer = models.TextField(blank=True, null=True)
+
+

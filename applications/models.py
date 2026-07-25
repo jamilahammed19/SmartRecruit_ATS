@@ -16,8 +16,8 @@ STATUS_CHOICES = [
 ]
 
 class Application(TimeStampedModel):
-    candidate = models.ForeignKey(CandidateProfile, on_delete=models.CASCADE)
-    job = models.ForeignKey(Job, on_delete=models.CASCADE)
+    candidate = models.OneToOneField(CandidateProfile, on_delete=models.CASCADE)
+    job = models.OneToOneField(Job, on_delete=models.CASCADE)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='applied')
     ai_match_score = models.FloatField(blank=True, null=True, help_text="AI-generated match score for the application")
     ai_match_summary = models.TextField(blank=True, null=True, help_text="AI-generated summary of the candidate's match for the job")
