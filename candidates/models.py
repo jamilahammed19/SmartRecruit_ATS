@@ -47,7 +47,13 @@ DEGREE_TYPE_CHOICES = [
 ]
 
 
-class PersonalInfo(TimeStampedModel):
+class CandidateProfile(TimeStampedModel):
+    """
+    Master model for a candidate. Combines User link and Personal Info.
+    """
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='candidate_profile')
+    
+    # Personal Info
     photo = models.ImageField(upload_to='candidate/images/', blank=True, null=True)
     full_name = models.CharField(max_length=255, blank=True)
     father_name = models.CharField(max_length=255, blank=True)
@@ -66,9 +72,20 @@ class PersonalInfo(TimeStampedModel):
     blood_group = models.CharField(max_length=3, choices=BLOOD_GROUP_CHOICES, blank=True)
     height = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
     weight = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True)
-    
+
+    def __str__(self):
+        return f"Profile of {self.full_name or self.user.username}"
+
 
 class Address(TimeStampedModel):
+    ADDRESS_TYPES = (
+        ('present', 'Present'),
+        ('permanent', 'Permanent'),
+    )
+    
+    profile = models.ForeignKey(CandidateProfile, on_delete=models.CASCADE, related_name='addresses')
+    address_type = models.CharField(max_length=20, choices=ADDRESS_TYPES)
+    
     country = models.CharField(max_length=100, default='Bangladesh', blank=True)
     division = models.CharField(max_length=100, blank=True)
     district = models.CharField(max_length=100, blank=True)
@@ -77,8 +94,17 @@ class Address(TimeStampedModel):
     post_code = models.CharField(max_length=20, blank=True)
     house_road_village = models.CharField(max_length=255, blank=True)
 
+    class Meta:
+        # Ensures a candidate doesn't have two "present" or two "permanent" addresses
+        unique_together = ('profile', 'address_type')
+
+    def __str__(self):
+        return f"{self.get_address_type_display()} address for {self.profile}"
+
 
 class Education(TimeStampedModel):
+    profile = models.ForeignKey(CandidateProfile, on_delete=models.CASCADE, related_name='educations')
+    
     degree_type = models.CharField(max_length=50, choices=DEGREE_TYPE_CHOICES, blank=True)
     degree_title = models.CharField(max_length=100, blank=True)
     board_university = models.CharField(max_length=255, blank=True)
@@ -90,16 +116,26 @@ class Education(TimeStampedModel):
     passing_year = models.PositiveIntegerField(blank=True, null=True)
     duration = models.CharField(max_length=50, blank=True, null=True)
 
+    def __str__(self):
+        return f"{self.degree_title} - {self.profile}"
+
 
 class Training(TimeStampedModel):
+    profile = models.ForeignKey(CandidateProfile, on_delete=models.CASCADE, related_name='trainings')
+    
     training_title = models.CharField(max_length=255, blank=True)
     institute = models.CharField(max_length=255, blank=True)
     location = models.CharField(max_length=255, blank=True)
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
 
+    def __str__(self):
+        return f"{self.training_title} - {self.profile}"
+
 
 class Employment(TimeStampedModel):
+    profile = models.ForeignKey(CandidateProfile, on_delete=models.CASCADE, related_name='employments')
+    
     organization_name = models.CharField(max_length=255, blank=True)
     organization_business = models.CharField(max_length=255, blank=True)
     organization_location = models.CharField(max_length=255, blank=True)
@@ -110,20 +146,35 @@ class Employment(TimeStampedModel):
     end_date = models.DateField(blank=True, null=True)
     is_current = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f"{self.designation} at {self.organization_name} - {self.profile}"
+
 
 class Skill(TimeStampedModel):
+    profile = models.ForeignKey(CandidateProfile, on_delete=models.CASCADE, related_name='skills')
+    
     skill_name = models.CharField(max_length=255, blank=True)
     years_of_experience = models.PositiveIntegerField(blank=True, null=True)
     description = models.TextField(blank=True)
 
+    def __str__(self):
+        return f"{self.skill_name} - {self.profile}"
+
 
 class ExtracurricularActivity(TimeStampedModel):
+    profile = models.ForeignKey(CandidateProfile, on_delete=models.CASCADE, related_name='extracurricular_activities')
+    
     activity_name = models.CharField(max_length=255, blank=True)
     position_held = models.CharField(max_length=255, blank=True)
     description = models.TextField(blank=True)
+    
+    def __str__(self):
+        return f"{self.activity_name} - {self.profile}"
 
 
 class Reference(TimeStampedModel):
+    profile = models.ForeignKey(CandidateProfile, on_delete=models.CASCADE, related_name='references')
+    
     name = models.CharField(max_length=255, blank=True)
     organization = models.CharField(max_length=255, blank=True)
     designation = models.CharField(max_length=255, blank=True)
@@ -133,25 +184,16 @@ class Reference(TimeStampedModel):
     relationship = models.CharField(max_length=255, blank=True)
     address = models.TextField(blank=True)
 
+    def __str__(self):
+        return f"Ref: {self.name} for {self.profile}"
+
 
 class PortfolioPublicationProject(TimeStampedModel):
+    profile = models.ForeignKey(CandidateProfile, on_delete=models.CASCADE, related_name='portfolios_publications_projects')
+    
     title = models.CharField(max_length=255, blank=True)
     description = models.TextField(blank=True)
     link = models.URLField(blank=True)
 
-
-class CandidateProfile(TimeStampedModel):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    personal_info = models.OneToOneField(PersonalInfo, on_delete=models.CASCADE)
-    present_address = models.OneToOneField(Address, related_name='present_address', on_delete=models.CASCADE)
-    permanent_address = models.OneToOneField(Address, related_name='permanent_address', on_delete=models.CASCADE)
-    educations = models.ManyToManyField(Education, blank=True)
-    trainings = models.ManyToManyField(Training, blank=True)
-    employments = models.ManyToManyField(Employment, blank=True)
-    skills = models.ManyToManyField(Skill, blank=True)
-    extracurricular_activities = models.ManyToManyField(ExtracurricularActivity, blank=True)
-    references = models.ManyToManyField(Reference, blank=True)
-    portfolios_publications_projects = models.ManyToManyField(PortfolioPublicationProject, blank=True)
-
     def __str__(self):
-        return f"Profile of {self.personal_info.full_name}"
+        return f"{self.title} - {self.profile}"

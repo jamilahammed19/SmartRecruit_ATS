@@ -1,4 +1,3 @@
-# candidates/permissions.py
 from rest_framework import permissions
 
 class IsCandidateUser(permissions.BasePermission):
@@ -6,5 +5,5 @@ class IsCandidateUser(permissions.BasePermission):
         return bool(
             request.user and 
             request.user.is_authenticated and 
-            hasattr(request.user, 'candidateprofile')
+            hasattr(request.user, 'candidate_profile')
         )
