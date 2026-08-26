@@ -5,14 +5,9 @@ from .serializers import JobSerializer, AIInterviewQuestionSerializer
 from .permissions import IsHRUserOrReadOnly
 
 class JobViewSet(viewsets.ModelViewSet):
-    """
-    Handles all CRUD operations for Jobs.
-    - Candidates can view jobs.
-    - HR can create, update, and delete jobs.
-    """
     queryset = Job.objects.all().order_by('-created_at')  # Shows newest jobs first
     serializer_class = JobSerializer
-    permission_classes = [IsAuthenticated, IsHRUserOrReadOnly]
+    permission_classes = [IsHRUserOrReadOnly]
 
     # Optional: If you want candidates to only see "Open" jobs, you can filter the queryset
     def get_queryset(self):
@@ -27,9 +22,6 @@ class JobViewSet(viewsets.ModelViewSet):
 
 
 class AIInterviewQuestionViewSet(viewsets.ModelViewSet):
-    """
-    Handles CRUD for AI Interview Questions.
-    """
     queryset = AIInterviewQuestion.objects.all()
     serializer_class = AIInterviewQuestionSerializer
     permission_classes = [IsAuthenticated, IsHRUserOrReadOnly]

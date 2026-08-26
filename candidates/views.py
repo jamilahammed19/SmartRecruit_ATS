@@ -1,4 +1,5 @@
 from rest_framework import generics, viewsets
+from rest_framework.parsers import MultiPartParser, FormParser
 from .permissions import IsCandidateUser
 from .models import (
     CandidateProfile, Address, Education, Training, Employment, 
@@ -6,7 +7,7 @@ from .models import (
     PortfolioPublicationProject
 )
 from .serializers import (
-    CandidateProfileReadSerializer, PersonalInfoUpdateSerializer, 
+    CandidateProfileReadSerializer, PersonalInfoUpdateSerializer, ProfilePictureSerializer, 
     AddressSerializer, EducationSerializer, TrainingSerializer, 
     EmploymentSerializer, SkillSerializer, ExtracurricularActivitySerializer,
     ReferenceSerializer, PortfolioPublicationProjectSerializer
@@ -29,6 +30,15 @@ class PersonalInfoView(generics.RetrieveUpdateAPIView):
         # Personal info is now stored directly on the CandidateProfile
         return self.request.user.candidate_profile
 
+
+class ProfilePictureView(generics.UpdateAPIView):
+    serializer_class = ProfilePictureSerializer
+    permission_classes = [IsCandidateUser]
+    # These parsers tell Django to expect a file upload instead of JSON
+    parser_classes = [MultiPartParser, FormParser] 
+
+    def get_object(self):
+        return self.request.user.candidate_profile
 
 class BaseAddressView(generics.RetrieveUpdateAPIView):
     serializer_class = AddressSerializer

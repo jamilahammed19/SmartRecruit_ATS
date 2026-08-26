@@ -12,12 +12,17 @@ class BaseTimeStampedSerializer(serializers.ModelSerializer):
     class Meta:
         exclude = ['created_at', 'updated_at']
 
-# Personal Info is now part of CandidateProfile, so we create a serializer just for those fields
+# 1. NEW: Serializer just for handling the Photo upload
+class ProfilePictureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CandidateProfile
+        fields = ['photo']
+
+# 2. UPDATED: Exclude 'photo' here so standard text updates don't overwrite the image
 class PersonalInfoUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = CandidateProfile
-        # Exclude relational and system fields so the user can only update their personal data
-        exclude = ['id', 'user', 'created_at', 'updated_at']
+        exclude = ['id', 'user', 'created_at', 'updated_at', 'photo']
 
 class AddressSerializer(BaseTimeStampedSerializer):
     class Meta(BaseTimeStampedSerializer.Meta):
@@ -77,7 +82,7 @@ class CandidateProfileReadSerializer(serializers.ModelSerializer):
     class Meta:
         model = CandidateProfile
         fields = [
-            'id', 'personal_info', 'present_address', 'permanent_address', 
+            'id', 'photo', 'personal_info', 'present_address', 'permanent_address', 
             'educations', 'trainings', 'employments', 'skills', 
             'extracurricular_activities', 'references', 'portfolios_publications_projects'
         ]

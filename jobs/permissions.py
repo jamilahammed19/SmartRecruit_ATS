@@ -11,8 +11,9 @@ class IsHRUserOrReadOnly(permissions.BasePermission):
             return True
             
         # For POST, PUT, PATCH, DELETE: check if they have an HR profile
+        # FIX: Added the underscore to match the related_name='hr_profile'
         return bool(
             request.user and 
             request.user.is_authenticated and 
-            hasattr(request.user, 'hrprofile')
+            hasattr(request.user, 'hr_profile') 
         )

@@ -6,6 +6,7 @@ from .views import (
     PermanentAddressView,
     CandidateProfileView,
     EducationViewSet,
+    ProfilePictureView,
     TrainingViewSet,
     EmploymentViewSet,
     SkillViewSet,
@@ -29,5 +30,6 @@ urlpatterns = [
     path('personal_info/', PersonalInfoView.as_view(), name='personal-info'),
     path('present_address/', PresentAddressView.as_view(), name='present-address'),
     path('permanent_address/', PermanentAddressView.as_view(), name='permanent-address'),
+    path('profile_picture/', ProfilePictureView.as_view(), name='profile-picture'),
     path('', include(router.urls)),
 ]
