@@ -15,6 +15,14 @@ STATUS_CHOICES = [
     ('hired', 'Hired'),
 ]
 
+INTERVIEW_STATUS_CHOICES = [
+    ('scheduled', 'Scheduled (Pending Confirmation)'),
+    ('accepted', 'Accepted'),
+    ('reschedule_requested', 'Reschedule Requested'),
+    ('completed', 'Completed'),
+    ('canceled', 'Canceled'),
+]
+
 class Application(TimeStampedModel):
     candidate = models.ForeignKey(CandidateProfile, on_delete=models.CASCADE, related_name='applications')
     job = models.ForeignKey(Job, on_delete=models.CASCADE, related_name='applications')

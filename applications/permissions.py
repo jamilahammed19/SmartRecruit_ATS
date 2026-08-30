@@ -10,8 +10,8 @@ class IsHRUserOrCandidateOwner(permissions.BasePermission):
         if hasattr(request.user, 'hr_profile'):
             return True
             
-        # Candidates can only view or interact with their own application
-        if hasattr(request.user, 'candidateprofile'):
+        # FIXED: Added the underscore to match your views.py exactly
+        if hasattr(request.user, 'candidate_profile'):
             return obj.candidate.user == request.user
             
         return False
