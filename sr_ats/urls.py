@@ -27,6 +27,7 @@ urlpatterns = [
     path('api/applications/', include('applications.urls')),
     path('api/interviews/', include('interviews.urls')),
     path('api/notifications/', include('notifications.urls')),
+    path('api/candidate/', include('ai_engine.urls')),
 ]
 
 

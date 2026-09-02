@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'applications',
     'interviews',
     'notifications',
+    'ai_engine',
     
 
 ]
