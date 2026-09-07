@@ -5,7 +5,6 @@ class RescheduleRequestSerializer(serializers.ModelSerializer):
     class Meta:
         model = RescheduleRequest
         fields = ['id', 'interview', 'requested_time', 'reason', 'status', 'created_at']
-        # Candidates should not be able to approve their own requests!
         read_only_fields = ['status', 'created_at'] 
 
 
@@ -15,7 +14,6 @@ class InterviewSerializer(serializers.ModelSerializer):
 
     application_status = serializers.CharField(source='application.status', read_only=True)
     
-    # This brings in the related reschedule requests automatically
     reschedule_requests = RescheduleRequestSerializer(source='reschedulerequest_set', many=True, read_only=True)
 
     class Meta:

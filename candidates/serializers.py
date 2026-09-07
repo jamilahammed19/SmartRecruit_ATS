@@ -12,13 +12,11 @@ class BaseTimeStampedSerializer(serializers.ModelSerializer):
     class Meta:
         exclude = ['created_at', 'updated_at']
 
-# 1. NEW: Serializer just for handling the Photo upload
 class ProfilePictureSerializer(serializers.ModelSerializer):
     class Meta:
         model = CandidateProfile
         fields = ['photo']
 
-# 2. UPDATED: Exclude 'photo' here so standard text updates don't overwrite the image
 class PersonalInfoUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = CandidateProfile
@@ -66,7 +64,6 @@ class PortfolioPublicationProjectSerializer(BaseTimeStampedSerializer):
 
 
 class CandidateProfileReadSerializer(serializers.ModelSerializer):
-    # We use MethodFields to structure the JSON exactly how React expects it
     personal_info = serializers.SerializerMethodField()
     present_address = serializers.SerializerMethodField()
     permanent_address = serializers.SerializerMethodField()
@@ -88,15 +85,12 @@ class CandidateProfileReadSerializer(serializers.ModelSerializer):
         ]
 
     def get_personal_info(self, obj):
-        # Passes the profile itself into the PersonalInfo serializer
         return PersonalInfoUpdateSerializer(obj).data
 
     def get_present_address(self, obj):
-        # Filters the reverse relation for the present address
         address = obj.addresses.filter(address_type='present').first()
         return AddressSerializer(address).data if address else None
 
     def get_permanent_address(self, obj):
-        # Filters the reverse relation for the permanent address
         address = obj.addresses.filter(address_type='permanent').first()
         return AddressSerializer(address).data if address else None

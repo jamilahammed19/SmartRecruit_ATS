@@ -12,14 +12,11 @@ class CandidateRegistrationView(generics.CreateAPIView):
     serializer_class = CandidateRegistrationSerializer
 
 
-
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_user_role(request):
     user = request.user
     
-    # Check which profile the user has
     if hasattr(user, 'hr_profile'):
         return Response({'role': 'hr', 'name': user.first_name or user.username})
     elif hasattr(user, 'candidate_profile'):

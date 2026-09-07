@@ -148,16 +148,12 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    # Access token is short-lived for security (React sends this with every request)
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     
-    # Refresh token is long-lived (React uses this to silently get a new Access token)
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
     
-    # The frontend will send the token as "Bearer <token>"
     'AUTH_HEADER_TYPES': ('Bearer',),
     
-    # Adds the user's ID to the token so the backend knows who they are
     'USER_ID_FIELD': 'id',
     'USER_ID_CLAIM': 'user_id',
 }

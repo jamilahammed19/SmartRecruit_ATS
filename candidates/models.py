@@ -5,9 +5,6 @@ from django.core.validators import MinValueValidator, MaxValueValidator
 from core.models import TimeStampedModel
 import datetime
 
-# ==========================================
-# CHOICE DEFINITIONS
-# ==========================================
 
 GENDER_CHOICES = [
     ('male', 'Male'), ('female', 'Female'), ('other', 'Other')
@@ -101,13 +98,9 @@ DISTRICT_CHOICES = [
     ('Thakurgaon', 'Thakurgaon')
 ]
 
-# Helper to get current year for validation
 def current_year():
     return datetime.date.today().year
 
-# ==========================================
-# MODELS
-# ==========================================
 
 class CandidateProfile(TimeStampedModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='candidate_profile')
@@ -122,17 +115,14 @@ class CandidateProfile(TimeStampedModel):
     marital_status = models.CharField(max_length=20, choices=MARITAL_STATUS_CHOICES, blank=True)
     nationality = models.CharField(max_length=100, default='Bangladeshi', blank=True)
     
-    # Identifiers
     nid = models.CharField(max_length=30, unique=True, blank=True, null=True)
     passport_number = models.CharField(max_length=30, unique=True, blank=True, null=True)
     
-    # Contact
     phone_number = models.CharField(max_length=20, unique=True, blank=True, null=True)
     phone_number_alt = models.CharField(max_length=20, blank=True)
     verified_email = models.EmailField(unique=True, blank=True, null=True)
     email_alt = models.EmailField(blank=True)
     
-    # Physical Attributes (Strict limits applied)
     blood_group = models.CharField(max_length=5, choices=BLOOD_GROUP_CHOICES, blank=True)
     height = models.DecimalField(max_digits=4, decimal_places=2, blank=True, null=True, help_text="Height in feet (e.g., 5.8)")
     weight = models.DecimalField(max_digits=5, decimal_places=2, blank=True, null=True, help_text="Weight in kg")
@@ -170,20 +160,16 @@ class Education(TimeStampedModel):
     degree_title = models.CharField(max_length=255, blank=True, help_text="e.g., BSc in Computer Science")
     board_university = models.CharField(max_length=255, blank=True)
     
-    # Type (Science/Arts/Commerce) and specific Major (Physics, Accounting, etc.)
     major_group_type = models.CharField(max_length=50, choices=MAJOR_GROUP_TYPE_CHOICES, blank=True)
     major_group = models.CharField(max_length=100, blank=True, help_text="e.g. Physics, Accounting")
     
     institution = models.CharField(max_length=255, blank=True)
     dept = models.CharField(max_length=255, blank=True)
     
-    # Text because results can be "First Class" or "A+"
     result = models.CharField(max_length=50, blank=True) 
     
-    # Changed to CharField to support Choice dropdown including "other"
     scale = models.CharField(max_length=50, choices=SCALE_CHOICES, blank=True)
     
-    # Validated Passing Year (Between 1950 and current year + 5)
     passing_year = models.PositiveIntegerField(
         validators=[MinValueValidator(1950), MaxValueValidator(current_year() + 5)],
         blank=True, null=True
@@ -255,7 +241,6 @@ class Reference(TimeStampedModel):
     organization = models.CharField(max_length=255, blank=True)
     designation = models.CharField(max_length=255, blank=True)
     
-    # Reverted to text field as requested
     relationship = models.CharField(max_length=255, blank=True)
     
     mobile_number = models.CharField(max_length=20, blank=True)

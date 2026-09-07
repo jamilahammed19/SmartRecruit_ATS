@@ -27,14 +27,12 @@ class PersonalInfoView(generics.RetrieveUpdateAPIView):
     permission_classes = [IsCandidateUser]
 
     def get_object(self):
-        # Personal info is now stored directly on the CandidateProfile
         return self.request.user.candidate_profile
 
 
 class ProfilePictureView(generics.UpdateAPIView):
     serializer_class = ProfilePictureSerializer
     permission_classes = [IsCandidateUser]
-    # These parsers tell Django to expect a file upload instead of JSON
     parser_classes = [MultiPartParser, FormParser] 
 
     def get_object(self):
@@ -46,7 +44,6 @@ class BaseAddressView(generics.RetrieveUpdateAPIView):
     address_type = None
 
     def get_object(self):
-        # get_or_create ensures an Address object exists when the user tries to PUT to it
         obj, created = Address.objects.get_or_create(
             profile=self.request.user.candidate_profile, 
             address_type=self.address_type
@@ -64,11 +61,9 @@ class BaseProfileSectionViewSet(viewsets.ModelViewSet):
     permission_classes = [IsCandidateUser]
 
     def get_queryset(self):
-        # Filter related items (educations, skills, etc) by the logged-in candidate
         return self.queryset.filter(profile=self.request.user.candidate_profile)
 
     def perform_create(self, serializer):
-        # Automatically attach the ForeignKey when creating a new record
         serializer.save(profile=self.request.user.candidate_profile)
 
 
