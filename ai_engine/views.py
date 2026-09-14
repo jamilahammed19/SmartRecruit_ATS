@@ -19,24 +19,34 @@ class CandidateDocumentViewSet(viewsets.ModelViewSet):
 @api_view(['POST'])
 @permission_classes([permissions.IsAuthenticated])
 def process_documents_with_ai(request):
-    latest_doc = CandidateDocument.objects.filter(user=request.user).order_by('-created_at').first()
+    user_docs = CandidateDocument.objects.filter(user=request.user).order_by('created_at')
     
-    if not latest_doc:
+    if not user_docs.exists():
         return Response({"error": "No documents found to process."}, status=400)
 
     FASTAPI_URL = "http://127.0.0.1:8001/api/ai/parse-cv/"
     
+    multipart_form_data = []
+    file_handles = []
+    
     try:
-        content_type, _ = mimetypes.guess_type(latest_doc.file.name)
+        for doc in user_docs:
+            content_type, _ = mimetypes.guess_type(doc.file.name)
+            f = open(doc.file.path, 'rb')
+            file_handles.append(f)
+            
+            multipart_form_data.append(
+                ('files', (doc.file_name, f, content_type or 'application/octet-stream'))
+            )
+            
+        headers = {
+            "X-API-Key": "super-secret-smartrecruit-ats-key-2026"
+        }
         
-        with open(latest_doc.file.path, 'rb') as f:
-            files = {'file': (latest_doc.file_name, f, content_type or 'application/octet-stream')}
-            
-            headers = {
-                "X-API-Key": "super-secret-smartrecruit-ats-key-2026"
-            }
-            
-            response = requests.post(FASTAPI_URL, files=files, headers=headers)
+        response = requests.post(FASTAPI_URL, files=multipart_form_data, headers=headers)
+        
+        for f in file_handles:
+            f.close()
             
         if response.status_code == 200:
             return Response(response.json())
@@ -44,6 +54,12 @@ def process_documents_with_ai(request):
             return Response({"error": f"AI Backend Error: {response.text}"}, status=response.status_code)
             
     except requests.exceptions.ConnectionError:
+        for f in file_handles:
+            if not f.closed:
+                f.close()
         return Response({"error": "Cannot connect to AI Backend. Ensure FastAPI is running on port 8001."}, status=503)
     except Exception as e:
+        for f in file_handles:
+            if not f.closed:
+                f.close()
         return Response({"error": str(e)}, status=500)

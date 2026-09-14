@@ -162,3 +162,22 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
 ]
+
+
+# --- EMAIL SERVER SETTINGS ---
+# For the defense presentation, you can use a real Gmail account with an "App Password".
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'jamilahammed.iubat@gmail.com' # Replace with your actual email
+EMAIL_HOST_PASSWORD = 'eebuafwdyywqspiq' # Replace with your 16-character App Password
+DEFAULT_FROM_EMAIL = 'SmartRecruit ATS <jamilahammed.iubat@gmail.com>'
+
+# --- CELERY QUEUE SETTINGS ---
+# This tells Django to use our local Fedora Redis server as the message broker.
+# When an email needs to be sent, Django drops a message into Redis, and Celery picks it up.
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
