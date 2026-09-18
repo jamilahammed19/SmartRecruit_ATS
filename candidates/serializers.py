@@ -68,6 +68,7 @@ class CandidateProfileReadSerializer(serializers.ModelSerializer):
     present_address = serializers.SerializerMethodField()
     permanent_address = serializers.SerializerMethodField()
     
+    user_email = serializers.EmailField(source='user.email', read_only=True)
     educations = EducationSerializer(many=True, read_only=True)
     trainings = TrainingSerializer(many=True, read_only=True)
     employments = EmploymentSerializer(many=True, read_only=True)
@@ -79,7 +80,7 @@ class CandidateProfileReadSerializer(serializers.ModelSerializer):
     class Meta:
         model = CandidateProfile
         fields = [
-            'id', 'photo', 'personal_info', 'present_address', 'permanent_address', 
+            'id', 'user_email', 'photo', 'personal_info', 'present_address', 'permanent_address', 
             'educations', 'trainings', 'employments', 'skills', 
             'extracurricular_activities', 'references', 'portfolios_publications_projects'
         ]
